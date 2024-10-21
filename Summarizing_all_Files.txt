@@ -1,0 +1,100 @@
+# Collection of all Concepts
+
+#BASICS
+
+pd.set_option("display.max_rows", 20) To display max columns and max_rows
+df.occupation.value_counts() This will return values of unique occupations in dataset
+print(chipo[(chipo['item_name'] == 'Chicken Bowl') & (chipo['quantity'] == 1)]) Using and operator
+new_df = chipo[['item_name','item_price']] Creating a new df from existing df
+chipo.sort_values(by = "item_price",ascending = False).head(1) Sorting values
+remove_duplicates = chipo.drop_duplicates(['item_name','quantity','choice_description']) Removing drop_duplicates
+
+#FILTER AND SORTING
+
+round(discipline["Yellow Cards"].mean(),2) Rounding by 2 decimal places
+euro12[euro12.Team.str.endswith('e')] String manuplation
+euro12.iloc[:,0:7] gives all the rows with first 7 columns
+euro12.iloc[:,0:-3] selecting all the rows and columns except last 3
+euro12.loc[euro12.Team.isin(['England', 'Italy', 'Russia']),["Team","Shooting Accuracy"]] this will give shooting accuracy of 3 teams
+
+#GROUPING
+
+round(drinks.groupby('continent').beer_servings.mean(),2) Grouping by continent and calculating beer_servings
+drinks.groupby('continent').spirit_servings.agg(["min","max"])
+or 
+drinks.groupby('continent').agg({"spirit_servings":["min","max"]})
+regiment.groupby(["regiment","company"]).preTestScore.mean()
+regiment.groupby(['regiment', 'company']).preTestScore.mean().unstack() #This gives without hyrarical indexing
+regiment.groupby(['regiment', 'company']).count() Returns all the count
+regiment.groupby(['regiment', 'company']).size() returns no of observations
+
+# regiment.groupby("regiment") This object contains unique names of that groupby column
+#  and datasets of that names
+'''for i,j in regiment.groupby("regiment"):
+    print(j)'''
+
+#APPLY
+capitalizer = lambda x: x.capitalize()
+refined_df["Mjob"] = refined_df["Mjob"].apply(capitalizer)
+
+def mul_ten(x):
+    if type(x) is int:
+        return x*10
+    return x
+
+refined_df.applymap(mul_ten).head() # this will check the integer values in the dataset and multply by 10
+
+#crime["Year"] = crime["Year"].astype("datetime64[ns]") This is used to convert from one dtype to another
+crime.Year = pd.to_datetime(crime["Year"], format = "%Y") 
+#This is for coverting a dtype to datetime type based on format mentioned
+crimes = crime.resample('10AS').sum() for modifing the whole df(Works with only date datatypes)
+#*** resample function will change the length of the dataset to the 
+# multiple values mentioned in the parameter 
+# Note: This resample can be used only with dateandtime ***
+crime.idxmax(0) # if we want ro get max of all the columns in specific years
+#Note: This idxmax can be used only with dateandtime
+
+#MERGE
+
+cars = cars1_new._append(cars2)
+all_data = pd.concat([data1,data2]) # merge along rows
+all_data_cols = pd.concat([data1,data2], axis=1) # merge along columns
+merge_subid = all_data.merge(data3, on="subject_id")
+two_merge = data1.merge(data2, on="subject_id", how='outer')
+big_column.reset_index(inplace=True,drop=True)
+big_column = big_column.to_frame()
+
+#STATS
+
+del baby_names["Id"]
+baby_names.groupby("Gender").count() # This gives all the colunms count by grouping Gender column
+baby_names.Gender.value_counts() #Exact value count of Genders
+names[names.Count == names.Count.max()] # Most frequent occured name in dataset format
+names.Count.idxmax() #  Most frequent occured name by direct value
+names[names.Count == names.Count.min()] # min value occurance
+names[names.Count == names.Count.median()] # Median value dataset
+names.Count.std() # Starand deviation
+names = baby_names.groupby("Name").sum()
+
+df["Yr_Mo_Dy"] = pd.to_datetime(df["Yr_Mo_Dy"])
+#df.isnull().sum()
+#df.notnull().sum()
+#df.sum().sum() - df.notnull().sum().sum()
+
+#TIMESERIES
+
+#apple.duplicated() This will give duplicated rows
+#apple.columnname.is_unique()  This is to check specific columns duplicated or unique
+
+#DELETING
+
+wine = wine.drop(wine.columns[[0,3,6,8,11,12,13]],axis=1)
+wine.dropna(subset=["alcohol"],inplace=True) Delete Null values in specific column
+#wine.dropna(axis = 0, how = "any", inplace=True) Delete Null values in all the df
+#wine.iloc[0:3,0] = np.nan #To show and replace the data use iloc fro mentioning integer values
+wine.loc[0:2,"alcohol"] = np.nan # To show and reploce at specific places use loc for mentioning string
+wine.alcohol.fillna(10, inplace=True) ti fill the values in specific column
+random_nums = np.random.randint(10,size = 10)
+wine.drop(index=13,axis=0) deleting specific row
+
+

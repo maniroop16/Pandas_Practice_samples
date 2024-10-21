@@ -10,7 +10,7 @@ crimes = crime.resample('10AS').sum()
 max_population = crime["Population"].resample("10AS").max()
 
 #*** resample function will change the length of the dataset to the 
-# multiple valuse mentioned in the parameter 
+# multiple values mentioned in the parameter 
 # Note: This resample can be used only with dateandtime ***
 
 crimes.Population = max_population
